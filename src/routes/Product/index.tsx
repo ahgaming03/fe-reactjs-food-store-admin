@@ -1,11 +1,17 @@
+import axios from "axios";
+import { useEffect, useState } from "react";
+
 import { DisplayImage } from "@/components/DisplayImage";
 import { Pagination } from "@/components/Pagination";
 import { Spinner } from "@/components/Spinner";
 import { Title } from "@/components/Title";
-import axios from "axios";
-import { useEffect, useState } from "react";
-import { FaPencilAlt, FaTrashAlt } from "react-icons/fa";
+import { FaPencilAlt, FaPlus, FaTrashAlt } from "react-icons/fa";
 import { ImSpinner11 } from "react-icons/im";
+
+// ui
+import { Button } from "@/components/ui/button";
+import { Dialog, DialogTrigger } from "@/components/ui/dialog";
+import AddProduct from "./AddProduct";
 
 interface IproductProps {
   _id: string;
@@ -53,18 +59,30 @@ export default function Product() {
 
   useEffect(() => {
     handleFetchData();
+    console.log("loading", loading);
   }, []);
 
   return (
     <>
       <Title>Products</Title>
-      <button
-        onClick={handleFetchData}
-        className="my-4 flex items-center gap-2 rounded-md border border-green-600 bg-green-200 px-4 py-2 text-green-600 hover:bg-green-500 hover:text-green-100"
-      >
-        <ImSpinner11 className="animate-spin" />
-        <span>Refresh</span>
-      </button>
+      <div className="my-4 flex gap-4">
+        <button
+          onClick={handleFetchData}
+          className="flex items-center gap-2 rounded-md border border-blue-600 bg-blue-200 px-4 py-2 text-blue-600 hover:bg-blue-500 hover:text-green-100"
+        >
+          <ImSpinner11 />
+          <span>Refresh</span>
+        </button>
+        <Dialog>
+          <DialogTrigger asChild>
+            <Button className="flex items-center gap-2 rounded-md border border-green-600 bg-green-200 px-4 py-2 text-green-600 hover:bg-green-500 hover:text-green-100">
+              <FaPlus />
+              <span>Add</span>
+            </Button>
+          </DialogTrigger>
+          <AddProduct />
+        </Dialog>
+      </div>
       <div className="relative overflow-x-auto shadow-md sm:rounded-lg">
         <table className="w-full text-left text-lg">
           <thead className="bg-gray-600 text-sm uppercase text-gray-50">
@@ -94,7 +112,7 @@ export default function Product() {
             </tr>
           </thead>
           <tbody>
-            {!loading && (
+            {loading && (
               <tr>
                 <td colSpan={6} className="">
                   <Spinner />
@@ -112,7 +130,10 @@ export default function Product() {
                     />
                   </td>
                   <td scope="row" className="px-6 py-4">
-                    <DisplayImage id="" className="h-16 w-16 object-cover" />
+                    <DisplayImage
+                      // id=""
+                      className="h-16 w-16 object-cover"
+                    />
                   </td>
                   <td scope="row" className="px-6 py-4">
                     {item.name}
@@ -146,10 +167,6 @@ export default function Product() {
           </tbody>
         </table>
       </div>
-      <DisplayImage
-        id="528A04CEDA4283D5!s1310a45a903547a1a44a85df88631789"
-        className="h-16 w-16 object-cover"
-      />
       <div className="pt-4">
         {!loading && (
           <Pagination
