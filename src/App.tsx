@@ -17,26 +17,24 @@ function App() {
   return (
     <>
       <Router>
-        <div>
-          <Header />
-          <main className="flex min-h-screen">
-            <Sidebar />
-            <div className="flex w-full flex-col">
-              <div className="h-full px-4 py-4">
-                <Routes>
-                  <Route path="/products" element={<Product />} />
-                  <Route path="/categories" element={<Categories />} />
-                  <Route path="/about" element={<About />} />
-                  <Route path="/contact" element={<Contact />} />
-                  <Route path="/_blank" element={<Blank />} />
-                  <Route path="/" element={<Dashboard />} />
-                  <Route path="*" element={<NotFound />} />
-                </Routes>
-              </div>
-              <Footer />
+        <Header />
+        <main className="flex min-h-screen">
+          <Sidebar />
+          <div className="flex w-full flex-col">
+            <div className="h-full px-4 py-4">
+              <Routes>
+                <Route path="/products" element={<Product />} />
+                <Route path="/categories" element={<Categories />} />
+                <Route path="/about" element={<About />} />
+                <Route path="/contact" element={<Contact />} />
+                <Route path="/_blank" element={<Blank />} />
+                <Route path="/" element={<Dashboard />} />
+                <Route path="*" element={<NotFound />} />
+              </Routes>
             </div>
-          </main>
-        </div>
+            <Footer />
+          </div>
+        </main>
       </Router>
     </>
   );

@@ -2,6 +2,7 @@ import { StrictMode } from "react";
 import { createRoot } from "react-dom/client";
 import { Analytics } from "@vercel/analytics/react";
 import { SpeedInsights } from "@vercel/speed-insights/react";
+import { Toaster } from "./components/ui/toaster.tsx";
 
 import { Provider } from "react-redux";
 import { store } from "@/states/store";
@@ -16,5 +17,6 @@ createRoot(document.getElementById("root")!).render(
     </Provider>
     <Analytics />
     <SpeedInsights />
+    <Toaster />
   </StrictMode>,
 );
