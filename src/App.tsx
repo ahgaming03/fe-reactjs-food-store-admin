@@ -1,5 +1,6 @@
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 
+import Header from "./components/Header";
 import Sidebar from "./components/Sidebar";
 import Footer from "./components/Footer";
 
@@ -16,14 +17,12 @@ function App() {
   return (
     <>
       <Router>
-        <div className="grid grid-rows-[auto_1fr]">
-          <header className="select-none border-b border-blue-500 bg-blue-600 shadow">
-            Header
-          </header>
-          <main className="grid min-h-screen grid-cols-[auto_1fr]">
+        <div>
+          <Header />
+          <main className="flex min-h-screen">
             <Sidebar />
-            <div className="grid grid-rows-[1fr_auto]">
-              <div className="px-4 py-4">
+            <div className="flex w-full flex-col">
+              <div className="h-full px-4 py-4">
                 <Routes>
                   <Route path="/products" element={<Product />} />
                   <Route path="/categories" element={<Categories />} />
