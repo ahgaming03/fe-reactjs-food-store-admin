@@ -56,7 +56,7 @@ export function DataTable<TData, TValue>({
 
   return (
     <div className="space-y-3">
-      <div className="flex items-center">
+      <div className="flex max-md:flex-col-reverse md:items-center">
         <DataTableFilters table={table} />
         <DataTableViewOptions table={table} />
       </div>
