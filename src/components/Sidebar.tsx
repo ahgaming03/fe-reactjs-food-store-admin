@@ -18,7 +18,7 @@ const navLink: { name: string; path: string; icon: ReactNode }[] = [
 ];
 
 export default function Sidebar() {
-  const [isColaped, setIsColaped] = useState(false);
+  const [isColaped, setIsColaped] = useState(true);
 
   const handleColapse = () => {
     setIsColaped(!isColaped);
@@ -26,7 +26,10 @@ export default function Sidebar() {
 
   return (
     <>
-      <aside className="g select-none bg-blue-600 px-2 pt-4" translate="no">
+      <aside
+        className="max-smz-50 max-sm: select-none bg-blue-600 px-2 pt-4"
+        translate="no"
+      >
         <nav className="">
           <ul className="space-y-2">
             {navLink.map((item, index) => (
