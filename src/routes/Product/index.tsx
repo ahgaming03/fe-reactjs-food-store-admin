@@ -1,9 +1,8 @@
 import { useEffect, useState } from "react";
-import axios from "axios";
 import { useToast } from "@/hooks/use-toast";
 import clsx from "clsx";
 
-import { productCols, ProductType } from "./columns";
+import { productCols } from "./columns";
 
 import { Title } from "@/components/Title";
 import { FaPlus } from "react-icons/fa";
@@ -14,505 +13,38 @@ import { Button } from "@/components/ui/button";
 import { Dialog, DialogTrigger } from "@/components/ui/dialog";
 import AddProduct from "./AddProduct";
 import { DataTable } from "@/components/ui/data-table";
+import { Spinner } from "@/components/Spinner";
+import { fetchProducts } from "@/api/apiService";
+import { IProduct } from "@/lib/types";
 
 export default function Product() {
   const { toast } = useToast();
   const [loading, setLoading] = useState(false);
-  const [products, setProducts] = useState<ProductType[]>([]);
+  const [products, setProducts] = useState<IProduct[]>([]);
 
   const handleFetchData = async () => {
     setLoading(true);
-    try {
-      const response = await axios.get(`/api/products`).then((res) => res.data);
-
-      setProducts(response?.products); // Access response directly
-
-      toast({
-        variant: "success",
-        title: "Success fetch data",
-        description: "Data fetched successfully",
+    // Simulate fetching data
+    fetchProducts()
+      .then((data) => {
+        setProducts(data as IProduct[]);
+        toast({
+          variant: "success",
+          title: "Success fetch data",
+          description: "Data fetched successfully",
+        });
+      })
+      .catch((error) => {
+        console.error(error);
+        toast({
+          variant: "destructive",
+          title: "Error fetch data",
+          description: "Failed to fetch data",
+        });
+      })
+      .finally(() => {
+        setLoading(false);
       });
-
-      // setProducts([
-      //   {
-      //     _id: "66f9663a16e68e7f59bfece0",
-      //     name: "Com Tam ",
-      //     price: 20.5,
-      //     category: {
-      //       _id: "66f965da16e68e7f59bfecd5",
-      //       name: "Food",
-      //     },
-      //   },
-      //   {
-      //     _id: "66f9666916e68e7f59bfece3",
-      //     name: "Bun bo",
-      //     price: 20.5,
-      //     category: {
-      //       _id: "66f965da16e68e7f59bfecd5",
-      //       name: "Food",
-      //     },
-      //   },
-      //   {
-      //     _id: "66f966b716e68e7f59bfece6",
-      //     name: "Pepsi 330ml",
-      //     price: 20.5,
-      //     category: {
-      //       _id: "66f965ca16e68e7f59bfecd3",
-      //       name: "Drink",
-      //     },
-      //   },
-      //   {
-      //     _id: "66f966f216e68e7f59bfece9",
-      //     name: "Coke 0.5ml",
-      //     price: 20.55,
-      //     category: {
-      //       _id: "66f965ca16e68e7f59bfecd3",
-      //       name: "Drink",
-      //     },
-      //   },
-      //   {
-      //     _id: "66f9663a16e68e7f59bfece0",
-      //     name: "Com Tam",
-      //     price: 20.5,
-      //     category: {
-      //       _id: "66f965da16e68e7f59bfecd5",
-      //       name: "Food",
-      //     },
-      //   },
-      //   {
-      //     _id: "66f9666916e68e7f59bfece3",
-      //     name: "Bun bo",
-      //     price: 20.5,
-      //     category: {
-      //       _id: "66f965da16e68e7f59bfecd5",
-      //       name: "Food",
-      //     },
-      //   },
-      //   {
-      //     _id: "66f966b716e68e7f59bfece6",
-      //     name: "Pepsi 330ml",
-      //     price: 20.5,
-      //     category: {
-      //       _id: "66f965ca16e68e7f59bfecd3",
-      //       name: "Drink",
-      //     },
-      //   },
-      //   {
-      //     _id: "66f966f216e68e7f59bfece9",
-      //     name: "Coke 0.5ml",
-      //     price: 20.55,
-      //     category: {
-      //       _id: "66f965ca16e68e7f59bfecd3",
-      //       name: "Drink",
-      //     },
-      //   },
-      //   {
-      //     _id: "66f9663a16e68e7f59bfece0",
-      //     name: "Com Tam",
-      //     price: 20.5,
-      //     category: {
-      //       _id: "66f965da16e68e7f59bfecd5",
-      //       name: "Food",
-      //     },
-      //   },
-      //   {
-      //     _id: "66f9666916e68e7f59bfece3",
-      //     name: "Bun bo",
-      //     price: 20.5,
-      //     category: {
-      //       _id: "66f965da16e68e7f59bfecd5",
-      //       name: "Food",
-      //     },
-      //   },
-      //   {
-      //     _id: "66f966b716e68e7f59bfece6",
-      //     name: "Pepsi 330ml",
-      //     price: 20.5,
-      //     category: {
-      //       _id: "66f965ca16e68e7f59bfecd3",
-      //       name: "Drink",
-      //     },
-      //   },
-      //   {
-      //     _id: "66f966f216e68e7f59bfece9",
-      //     name: "Coke 0.5ml",
-      //     price: 20.55,
-      //     category: {
-      //       _id: "66f965ca16e68e7f59bfecd3",
-      //       name: "Drink",
-      //     },
-      //   },
-      //   {
-      //     _id: "66f9663a16e68e7f59bfece0",
-      //     name: "Com Tam",
-      //     price: 20.5,
-      //     category: {
-      //       _id: "66f965da16e68e7f59bfecd5",
-      //       name: "Food",
-      //     },
-      //   },
-      //   {
-      //     _id: "66f9666916e68e7f59bfece3",
-      //     name: "Bun bo",
-      //     price: 20.5,
-      //     category: {
-      //       _id: "66f965da16e68e7f59bfecd5",
-      //       name: "Food",
-      //     },
-      //   },
-      //   {
-      //     _id: "66f966b716e68e7f59bfece6",
-      //     name: "Pepsi 330ml",
-      //     price: 20.5,
-      //     category: {
-      //       _id: "66f965ca16e68e7f59bfecd3",
-      //       name: "Drink",
-      //     },
-      //   },
-      //   {
-      //     _id: "66f966f216e68e7f59bfece9",
-      //     name: "Coke 0.5ml",
-      //     price: 20.55,
-      //     category: {
-      //       _id: "66f965ca16e68e7f59bfecd3",
-      //       name: "Drink",
-      //     },
-      //   },
-      //   {
-      //     _id: "66f9663a16e68e7f59bfece0",
-      //     name: "Com Tam",
-      //     price: 20.5,
-      //     category: {
-      //       _id: "66f965da16e68e7f59bfecd5",
-      //       name: "Food",
-      //     },
-      //   },
-      //   {
-      //     _id: "66f9666916e68e7f59bfece3",
-      //     name: "Bun bo",
-      //     price: 20.5,
-      //     category: {
-      //       _id: "66f965da16e68e7f59bfecd5",
-      //       name: "Food",
-      //     },
-      //   },
-      //   {
-      //     _id: "66f966b716e68e7f59bfece6",
-      //     name: "Pepsi 330ml",
-      //     price: 20.5,
-      //     category: {
-      //       _id: "66f965ca16e68e7f59bfecd3",
-      //       name: "Drink",
-      //     },
-      //   },
-      //   {
-      //     _id: "66f966f216e68e7f59bfece9",
-      //     name: "Coke 0.5ml",
-      //     price: 20.55,
-      //     category: {
-      //       _id: "66f965ca16e68e7f59bfecd3",
-      //       name: "Drink",
-      //     },
-      //   },
-      //   {
-      //     _id: "66f9663a16e68e7f59bfece0",
-      //     name: "Com Tam",
-      //     price: 20.5,
-      //     category: {
-      //       _id: "66f965da16e68e7f59bfecd5",
-      //       name: "Food",
-      //     },
-      //   },
-      //   {
-      //     _id: "66f9666916e68e7f59bfece3",
-      //     name: "Bun bo",
-      //     price: 20.5,
-      //     category: {
-      //       _id: "66f965da16e68e7f59bfecd5",
-      //       name: "Food",
-      //     },
-      //   },
-      //   {
-      //     _id: "66f966b716e68e7f59bfece6",
-      //     name: "Pepsi 330ml",
-      //     price: 20.5,
-      //     category: {
-      //       _id: "66f965ca16e68e7f59bfecd3",
-      //       name: "Drink",
-      //     },
-      //   },
-      //   {
-      //     _id: "66f966f216e68e7f59bfece9",
-      //     name: "Coke 0.5ml",
-      //     price: 20.55,
-      //     category: {
-      //       _id: "66f965ca16e68e7f59bfecd3",
-      //       name: "Drink",
-      //     },
-      //   },
-      //   {
-      //     _id: "66f9663a16e68e7f59bfece0",
-      //     name: "Com Tam",
-      //     price: 20.5,
-      //     category: {
-      //       _id: "66f965da16e68e7f59bfecd5",
-      //       name: "Food",
-      //     },
-      //   },
-      //   {
-      //     _id: "66f9666916e68e7f59bfece3",
-      //     name: "Bun bo",
-      //     price: 20.5,
-      //     category: {
-      //       _id: "66f965da16e68e7f59bfecd5",
-      //       name: "Food",
-      //     },
-      //   },
-      //   {
-      //     _id: "66f966b716e68e7f59bfece6",
-      //     name: "Pepsi 330ml",
-      //     price: 20.5,
-      //     category: {
-      //       _id: "66f965ca16e68e7f59bfecd3",
-      //       name: "Drink",
-      //     },
-      //   },
-      //   {
-      //     _id: "66f966f216e68e7f59bfece9",
-      //     name: "Coke 0.5ml",
-      //     price: 20.55,
-      //     category: {
-      //       _id: "66f965ca16e68e7f59bfecd3",
-      //       name: "Drink",
-      //     },
-      //   },
-      //   {
-      //     _id: "66f9663a16e68e7f59bfece0",
-      //     name: "Com Tam",
-      //     price: 20.5,
-      //     category: {
-      //       _id: "66f965da16e68e7f59bfecd5",
-      //       name: "Food",
-      //     },
-      //   },
-      //   {
-      //     _id: "66f9666916e68e7f59bfece3",
-      //     name: "Bun bo",
-      //     price: 20.5,
-      //     category: {
-      //       _id: "66f965da16e68e7f59bfecd5",
-      //       name: "Food",
-      //     },
-      //   },
-      //   {
-      //     _id: "66f966b716e68e7f59bfece6",
-      //     name: "Pepsi 330ml",
-      //     price: 20.5,
-      //     category: {
-      //       _id: "66f965ca16e68e7f59bfecd3",
-      //       name: "Drink",
-      //     },
-      //   },
-      //   {
-      //     _id: "66f966f216e68e7f59bfece9",
-      //     name: "Coke 0.5ml",
-      //     price: 20.55,
-      //     category: {
-      //       _id: "66f965ca16e68e7f59bfecd3",
-      //       name: "Drink",
-      //     },
-      //   },
-      //   {
-      //     _id: "66f9663a16e68e7f59bfece0",
-      //     name: "Com Tam",
-      //     price: 20.5,
-      //     category: {
-      //       _id: "66f965da16e68e7f59bfecd5",
-      //       name: "Food",
-      //     },
-      //   },
-      //   {
-      //     _id: "66f9666916e68e7f59bfece3",
-      //     name: "Bun bo",
-      //     price: 20.5,
-      //     category: {
-      //       _id: "66f965da16e68e7f59bfecd5",
-      //       name: "Food",
-      //     },
-      //   },
-      //   {
-      //     _id: "66f966b716e68e7f59bfece6",
-      //     name: "Pepsi 330ml",
-      //     price: 20.5,
-      //     category: {
-      //       _id: "66f965ca16e68e7f59bfecd3",
-      //       name: "Drink",
-      //     },
-      //   },
-      //   {
-      //     _id: "66f966f216e68e7f59bfece9",
-      //     name: "Coke 0.5ml",
-      //     price: 20.55,
-      //     category: {
-      //       _id: "66f965ca16e68e7f59bfecd3",
-      //       name: "Drink",
-      //     },
-      //   },
-      //   {
-      //     _id: "66f9663a16e68e7f59bfece0",
-      //     name: "Com Tam",
-      //     price: 20.5,
-      //     category: {
-      //       _id: "66f965da16e68e7f59bfecd5",
-      //       name: "Food",
-      //     },
-      //   },
-      //   {
-      //     _id: "66f9666916e68e7f59bfece3",
-      //     name: "Bun bo",
-      //     price: 20.5,
-      //     category: {
-      //       _id: "66f965da16e68e7f59bfecd5",
-      //       name: "Food",
-      //     },
-      //   },
-      //   {
-      //     _id: "66f966b716e68e7f59bfece6",
-      //     name: "Pepsi 330ml",
-      //     price: 20.5,
-      //     category: {
-      //       _id: "66f965ca16e68e7f59bfecd3",
-      //       name: "Drink",
-      //     },
-      //   },
-      //   {
-      //     _id: "66f966f216e68e7f59bfece9",
-      //     name: "Coke 0.5ml",
-      //     price: 20.55,
-      //     category: {
-      //       _id: "66f965ca16e68e7f59bfecd3",
-      //       name: "Drink",
-      //     },
-      //   },
-      //   {
-      //     _id: "66f9663a16e68e7f59bfece0",
-      //     name: "Com Tam",
-      //     price: 20.5,
-      //     category: {
-      //       _id: "66f965da16e68e7f59bfecd5",
-      //       name: "Food",
-      //     },
-      //   },
-      //   {
-      //     _id: "66f9666916e68e7f59bfece3",
-      //     name: "Bun bo",
-      //     price: 20.5,
-      //     category: {
-      //       _id: "66f965da16e68e7f59bfecd5",
-      //       name: "Food",
-      //     },
-      //   },
-      //   {
-      //     _id: "66f966b716e68e7f59bfece6",
-      //     name: "Pepsi 330ml",
-      //     price: 20.5,
-      //     category: {
-      //       _id: "66f965ca16e68e7f59bfecd3",
-      //       name: "Drink",
-      //     },
-      //   },
-      //   {
-      //     _id: "66f966f216e68e7f59bfece9",
-      //     name: "Coke 0.5ml",
-      //     price: 20.55,
-      //     category: {
-      //       _id: "66f965ca16e68e7f59bfecd3",
-      //       name: "Drink",
-      //     },
-      //   },
-      //   {
-      //     _id: "66f9663a16e68e7f59bfece0",
-      //     name: "Com Tam",
-      //     price: 20.5,
-      //     category: {
-      //       _id: "66f965da16e68e7f59bfecd5",
-      //       name: "Food",
-      //     },
-      //   },
-      //   {
-      //     _id: "66f9666916e68e7f59bfece3",
-      //     name: "Bun bo",
-      //     price: 20.5,
-      //     category: {
-      //       _id: "66f965da16e68e7f59bfecd5",
-      //       name: "Food",
-      //     },
-      //   },
-      //   {
-      //     _id: "66f966b716e68e7f59bfece6",
-      //     name: "Pepsi 330ml",
-      //     price: 20.5,
-      //     category: {
-      //       _id: "66f965ca16e68e7f59bfecd3",
-      //       name: "Drink",
-      //     },
-      //   },
-      //   {
-      //     _id: "66f966f216e68e7f59bfece9",
-      //     name: "Coke 0.5ml",
-      //     price: 20.55,
-      //     category: {
-      //       _id: "66f965ca16e68e7f59bfecd3",
-      //       name: "Drink",
-      //     },
-      //   },
-      //   {
-      //     _id: "66f9663a16e68e7f59bfece0",
-      //     name: "Com Tam",
-      //     price: 20.5,
-      //     category: {
-      //       _id: "66f965da16e68e7f59bfecd5",
-      //       name: "Food",
-      //     },
-      //   },
-      //   {
-      //     _id: "66f9666916e68e7f59bfece3",
-      //     name: "Bun bo",
-      //     price: 20.5,
-      //     category: {
-      //       _id: "66f965da16e68e7f59bfecd5",
-      //       name: "Food",
-      //     },
-      //   },
-      //   {
-      //     _id: "66f966b716e68e7f59bfece6",
-      //     name: "Pepsi 330ml",
-      //     price: 20.5,
-      //     category: {
-      //       _id: "66f965ca16e68e7f59bfecd3",
-      //       name: "Drink",
-      //     },
-      //   },
-      //   {
-      //     _id: "66f966f216e68e7f59bfece9",
-      //     name: "Coke 0.5ml",
-      //     price: 20.55,
-      //     category: {
-      //       _id: "66f965ca16e68e7f59bfecd3",
-      //       name: "Drink",
-      //     },
-      //   },
-      // ]); // Access responseData directly
-    } catch (error) {
-      console.error(error);
-      toast({
-        variant: "destructive",
-        title: "Error fetch data",
-        description: "Failed to fetch data",
-      });
-    } finally {
-      setLoading(false);
-    }
   };
 
   useEffect(() => {
@@ -554,7 +86,11 @@ export default function Product() {
         </Dialog>
       </div>
       <div className="container mx-auto pb-10">
-        <DataTable columns={productCols} data={products} />
+        {loading ? (
+          <Spinner />
+        ) : (
+          <DataTable columns={productCols} data={products} />
+        )}
       </div>
     </>
   );
