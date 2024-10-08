@@ -1,22 +1,14 @@
 import { ColumnDef } from "@tanstack/react-table";
-import { FaPencilAlt, FaTrashAlt } from "react-icons/fa";
 
-import defaultImage from "@/assets/images/default-image.png";
 import { Checkbox } from "@/components/ui/checkbox";
 import { DataTableColumnHeader } from "@/components/ui/data-table-column-header";
+import { Link } from "react-router-dom";
+import Money from "@/components/Money";
+import { ActionsColumn } from "./ActionsColumn";
+import { DisplayImage } from "@/components/DisplayImage";
+import { IProduct } from "@/lib/types";
 
-export type ProductType = {
-  _id: string;
-  name: string;
-  price: number;
-  image?: string;
-  category: {
-    _id: string;
-    name: string;
-  };
-};
-
-export const productCols: ColumnDef<ProductType>[] = [
+export const productCols: ColumnDef<IProduct>[] = [
   {
     id: "select",
     header: ({ table }) => (
@@ -44,14 +36,10 @@ export const productCols: ColumnDef<ProductType>[] = [
     accessorKey: "image",
     header: "Image",
     cell: ({ row }) => {
+      const id = row.original.image?.id;
       return (
-        <div className="flex items-center gap-2">
-          <img
-            // src={row.getValue("image")}
-            src={defaultImage}
-            alt={row.getValue("name")}
-            className="h-16 w-16 rounded-md object-cover"
-          />
+        <div className="flex h-20 w-20 items-center gap-2">
+          <DisplayImage imageId={id} className="rounded-md object-cover" />
         </div>
       );
     },
@@ -61,6 +49,16 @@ export const productCols: ColumnDef<ProductType>[] = [
     header: ({ column }) => (
       <DataTableColumnHeader column={column} title="Name" />
     ),
+    cell: ({ row }) => {
+      const id = row.original._id;
+      return (
+        <Link to={`/products/${id}`}>
+          <div className="line-clamp-2 font-semibold">
+            {row.getValue("name")}
+          </div>
+        </Link>
+      );
+    },
   },
 
   {
@@ -76,44 +74,19 @@ export const productCols: ColumnDef<ProductType>[] = [
     ),
     cell: ({ row }) => {
       const amount = parseFloat(row.getValue("price"));
-      const formatted = new Intl.NumberFormat("en-AU", {
-        style: "currency",
-        currency: "AUD",
-      }).format(amount);
 
-      return <div className="font-semibold">{formatted}</div>;
+      return (
+        <div className="font-semibold">
+          <Money amount={amount} />
+        </div>
+      );
     },
   },
   {
     accessorKey: "actions",
     header: "Actions",
     cell: ({ row }) => {
-      const id = row.original._id;
-
-      const handleEdit = () => [console.log("Edit", id)];
-
-      const handleDelete = () => [console.log("Delete", id)];
-
-      return (
-        <>
-          <div className="flex gap-3 text-2xl">
-            <button
-              onClick={handleEdit}
-              data-product-id={`${id}`}
-              className="text-blue-800 hover:text-blue-500"
-            >
-              <FaPencilAlt />
-            </button>
-            <button
-              onClick={handleDelete}
-              data-product-id={`${id}`}
-              className="text-red-700 hover:text-red-400"
-            >
-              <FaTrashAlt />
-            </button>
-          </div>
-        </>
-      );
+      return <ActionsColumn key={row.original._id} row={row} />;
     },
   },
 ];

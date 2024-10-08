@@ -1,6 +1,6 @@
 import { GiChickenLeg } from "react-icons/gi";
 
-export const Spinner = () => {
+export const Loading = () => {
   return (
     <>
       <div className="animate-pulse px-6 py-3 text-5xl">

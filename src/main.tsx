@@ -14,9 +14,9 @@ createRoot(document.getElementById("root")!).render(
   <StrictMode>
     <Provider store={store}>
       <App />
+      <Analytics />
+      <SpeedInsights />
+      <Toaster />
     </Provider>
-    <Analytics />
-    <SpeedInsights />
-    <Toaster />
   </StrictMode>,
 );
