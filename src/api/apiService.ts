@@ -16,7 +16,8 @@ export const fetchImage = (id: string) => {
   });
 };
 
-export const fetchCategory = () => {
+
+export const fetchCategories = () => {
   return new Promise((resolve, reject) => {
     axios
       .get(`/api/categories?sort=name&order=asc`)
@@ -26,6 +27,34 @@ export const fetchCategory = () => {
       })
       .catch((error) => {
         reject("Error fetching category" + error);
+      });
+  });
+};
+
+export const fetchCategory = (id: string) => {
+  return new Promise((resolve, reject) => {
+    axios
+      .get(`/api/categories/${id}`)
+      .then((res) => {
+        const response = res.data;
+        resolve(response.data);
+      })
+      .catch((error) => {
+        reject("Error fetching category" + error);
+      });
+  });
+};
+
+export const createCategory = (data: FormData) => {
+  return new Promise((resolve, reject) => {
+    axios
+      .post(`/api/categories`, data)
+      .then((res) => {
+        const response = res.data;
+        resolve(response.message);
+      })
+      .catch((error) => {
+        reject("Error creating category" + error);
       });
   });
 };
@@ -54,6 +83,24 @@ export const fetchProduct = (id: string) => {
       })
       .catch((error) => {
         reject("Error fetching product" + error);
+      });
+  });
+};
+
+export const createProduct = async (data: FormData) => {
+  return new Promise((resolve, reject) => {
+    axios
+      .post(`/api/products`, data, {
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+      })
+      .then((res) => {
+        const response = res.data;
+        resolve(response.message);
+      })
+      .catch((error) => {
+        reject("Error creating product" + error);
       });
   });
 };

@@ -13,17 +13,16 @@ import { Button } from "@/components/ui/button";
 import { Dialog, DialogTrigger } from "@/components/ui/dialog";
 import AddProduct from "./AddProduct";
 import { DataTable } from "@/components/ui/data-table";
-import { Spinner } from "@/components/Spinner";
 import { fetchProducts } from "@/api/apiService";
 import { IProduct } from "@/lib/types";
 
 export default function Product() {
   const { toast } = useToast();
-  const [loading, setLoading] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
   const [products, setProducts] = useState<IProduct[]>([]);
 
   const handleFetchData = async () => {
-    setLoading(true);
+    setIsLoading(true);
     // Simulate fetching data
     fetchProducts()
       .then((data) => {
@@ -43,7 +42,7 @@ export default function Product() {
         });
       })
       .finally(() => {
-        setLoading(false);
+        setIsLoading(false);
       });
   };
 
@@ -56,14 +55,14 @@ export default function Product() {
       <Title>Products</Title>
       <div className="my-4 flex gap-4">
         <button
-          disabled={loading}
-          onClick={() => !loading && handleFetchData()}
+          disabled={isLoading}
+          onClick={() => !isLoading && handleFetchData()}
           className={clsx(
             "flex items-center gap-2 rounded-md border border-blue-600 bg-blue-200 px-4 py-2 text-blue-600",
-            { "hover:bg-blue-500 hover:text-green-100": !loading },
+            { "hover:bg-blue-500 hover:text-green-100": !isLoading },
           )}
         >
-          {loading ? (
+          {isLoading ? (
             <>
               <ImSpinner11 className="animate-spin" />
               <span>Loading...</span>
@@ -86,11 +85,11 @@ export default function Product() {
         </Dialog>
       </div>
       <div className="container mx-auto pb-10">
-        {loading ? (
-          <Spinner />
-        ) : (
-          <DataTable columns={productCols} data={products} />
-        )}
+        <DataTable
+          isLoading={isLoading}
+          columns={productCols}
+          data={products}
+        />
       </div>
     </>
   );

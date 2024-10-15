@@ -1,5 +1,7 @@
 import { SubmitHandler, useForm } from "react-hook-form";
 import { useToast } from "@/hooks/use-toast";
+import clsx from "clsx";
+import { createProduct, fetchCategories } from "@/api/apiService";
 
 import imageDefault from "@/assets/images/default-image.png";
 
@@ -15,10 +17,7 @@ import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
 import { useEffect, useState } from "react";
-import axios from "axios";
 import { AiOutlineLoading } from "react-icons/ai";
-import clsx from "clsx";
-import { fetchCategory } from "@/api/apiService";
 
 type FormField = {
   name: string;
@@ -75,21 +74,14 @@ export default function AddProduct() {
       formData.append("description", data.description || "");
       formData.append("image", data.image ? data.image[0] : "");
 
-      const response = await axios
-        .post("/api/products", formData, {
-          headers: {
-            "Content-Type": "multipart/form-data",
-          },
-        })
-        .then((res) => res.data);
-
-      toast({
-        variant: "success",
-        title: "Product added",
-        description: response.message,
+      await createProduct(formData).then((response) => {
+        toast({
+          variant: "success",
+          title: "Product added",
+          description: `${response}`,
+        });
+        handleReset();
       });
-
-      handleReset();
     } catch (error) {
       setError("root", { message: `${error}` });
       toast({
@@ -106,7 +98,7 @@ export default function AddProduct() {
   };
 
   useEffect(() => {
-    fetchCategory().then((data) =>
+    fetchCategories().then((data) =>
       setCategory(data as { _id: string; name: string }[]),
     );
   }, []);

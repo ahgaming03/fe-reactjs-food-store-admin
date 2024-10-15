@@ -7,7 +7,8 @@ import imageDefault from "@/assets/images/default-image.png";
 
 import { Title } from "@/components/Title";
 import Money from "@/components/Money";
-import { Spinner } from "@/components/Spinner";
+
+import { Loading } from "@/components/Loading";
 import { Link } from "react-router-dom";
 import { FaArrowLeft } from "react-icons/fa";
 
@@ -44,7 +45,7 @@ export default function ViewProduct() {
         <FaArrowLeft />
         <span>Back</span>
       </Link>
-      {loading && <Spinner />}
+      {loading && <Loading />}
       {product === null && !loading && (
         <div className="text-2xl">
           <strong>Invalid product id: </strong>

@@ -19,7 +19,7 @@ import { useEffect, useState } from "react";
 import { AiOutlineLoading } from "react-icons/ai";
 import clsx from "clsx";
 import {
-  fetchCategory,
+  fetchCategories,
   fetchImage,
   fetchProduct,
   updateProduct,
@@ -70,7 +70,7 @@ export default function EditProduct({
   });
 
   useEffect(() => {
-    fetchCategory().then((data) =>
+    fetchCategories().then((data) =>
       setCategory(data as { _id: string; name: string }[]),
     );
 

@@ -4,7 +4,7 @@ import defaultImage from "@/assets/images/default-image.png";
 import { fetchImage } from "@/api/apiService";
 
 interface DisplayImageProps {
-  imageId: string;
+  imageId?: string;
   className?: string;
   id?: string;
 }
@@ -18,11 +18,12 @@ export const DisplayImage: React.FC<DisplayImageProps> = ({
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
-    fetchImage(imageId)
-      .then((base64Image) => setImageSrc(base64Image as string))
-      .catch((error) => {
-        setError(error);
-      });
+    if (imageId)
+      fetchImage(imageId)
+        .then((base64Image) => setImageSrc(base64Image as string))
+        .catch((error) => {
+          setError(error);
+        });
   }, [imageId]);
 
   return (

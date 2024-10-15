@@ -1,6 +1,5 @@
 import { ColumnDef } from "@tanstack/react-table";
 
-import defaultImage from "@/assets/images/default-image.png";
 import { Checkbox } from "@/components/ui/checkbox";
 import { DataTableColumnHeader } from "@/components/ui/data-table-column-header";
 import { Link } from "react-router-dom";
@@ -40,15 +39,7 @@ export const productCols: ColumnDef<IProduct>[] = [
       const id = row.original.image?.id;
       return (
         <div className="flex h-20 w-20 items-center gap-2">
-          {id ? (
-            <DisplayImage imageId={id} className="rounded-md object-cover" />
-          ) : (
-            <img
-              src={defaultImage}
-              alt={row.getValue("name")}
-              className="rounded-md object-cover"
-            />
-          )}
+          <DisplayImage imageId={id} className="rounded-md object-cover" />
         </div>
       );
     },
@@ -95,7 +86,7 @@ export const productCols: ColumnDef<IProduct>[] = [
     accessorKey: "actions",
     header: "Actions",
     cell: ({ row }) => {
-      return <ActionsColumn row={row} />;
+      return <ActionsColumn key={row.original._id} row={row} />;
     },
   },
 ];
