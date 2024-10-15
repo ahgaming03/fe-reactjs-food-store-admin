@@ -16,6 +16,7 @@ export const fetchImage = (id: string) => {
   });
 };
 
+
 export const fetchCategories = () => {
   return new Promise((resolve, reject) => {
     axios

@@ -7,6 +7,7 @@ import imageDefault from "@/assets/images/default-image.png";
 
 import { Title } from "@/components/Title";
 import Money from "@/components/Money";
+
 import { Loading } from "@/components/Loading";
 import { Link } from "react-router-dom";
 import { FaArrowLeft } from "react-icons/fa";
