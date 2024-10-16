@@ -13,3 +13,9 @@ export interface IProduct {
     webUrl: string;
   };
 }
+
+export interface ICategory {
+  _id: string;
+  name: string;
+  description?: string;
+}

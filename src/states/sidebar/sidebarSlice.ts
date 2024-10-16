@@ -20,4 +20,4 @@ const sidebarToggleSlice = createSlice({
 
 export const { toggle } = sidebarToggleSlice.actions;
 
-export default sidebarToggleSlice.reducer;
+export default sidebarToggleSlice;
